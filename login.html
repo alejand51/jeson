@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Login</title>
+    <script>
+        // JSON para almacenar credenciales y roles
+        const usuarios = [
+            { username: "admin", password: "admin123", role: "administrador" },
+            { username: "cliente", password: "cliente123", role: "cliente" },
+            { username: "invitado", password: "invitado123", role: "invitado" }
+        ];
+
+        // Función para iniciar sesión
+        function login(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            const usuario = usuarios.find(user => user.username === username && user.password === password);
+
+            if (usuario) {
+                alert(`Bienvenido, ${usuario.role}`);
+                redirigirUsuario(usuario);
+            } else {
+                alert("Credenciales incorrectas");
+            }
+        }
+
+        // Redirigir a la página específica según el rol
+        function redirigirUsuario(usuario) {
+            if (usuario.role === "administrador") {
+                window.location.href = "principal.html?username=" + encodeURIComponent(usuario.username) + "&role=" + encodeURIComponent(usuario.role);
+            } else if (usuario.role === "cliente" || usuario.role === "invitado") {
+                window.location.href = "cliente.html?username=" + encodeURIComponent(usuario.username) + "&role=" + encodeURIComponent(usuario.role);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Sistema de Login</h1>
+    <form onsubmit="login(event)">
+        <label for="username">Usuario:</label>
+        <input type="text" id="username" required>
+        <br>
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" required>
+        <br>
+        <button type="submit">Iniciar sesión</button>
+    </form>
+</body>
+</html>
